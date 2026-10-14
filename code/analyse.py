@@ -239,6 +239,33 @@ for N in (100, 200, 500):
 OUT["scale"] = sc
 show("scale", sc)
 
+# ----------------------------------------------------------------------
+# structural model when attacks can fail: refit on the realization graphs
+# (300 realizations + Karate) at every ASR setting, and on the scale-study
+# graphs (N = 100, 200, 500) at ASR = 100% and 60%
+# ----------------------------------------------------------------------
+def strip(f):
+    return {k: v for k, v in f.items() if k not in ("pred", "loo_pred")}
+
+
+asr_models = {}
+for a in ["100", "80", "60", "50", "rand"]:
+    x = hb[hb.asr_label == a]
+    asr_models[a] = strip(ols(x[["mean_degree", "hetero", "clustering"]].values, x.rasr_mean.values, ["k", "het", "C"]))
+OUT["asr_models"] = asr_models
+show("structural model by ASR (realization graphs)", asr_models)
+sm = {}
+parts = [pd.read_csv(os.path.join(R, f"results_scale_N{N}.csv"), dtype={"asr_label": str})
+         for N in (100, 200, 500) if os.path.exists(os.path.join(R, f"results_scale_N{N}.csv"))]
+if parts:
+    dsc = pd.concat(parts, ignore_index=True)
+    dsc = dsc[dsc.strategy == "HBnnsAGP"]
+    for a in ["100", "60"]:
+        x = dsc[dsc.asr_label == a]
+        sm[a] = strip(ols(x[["mean_degree", "hetero", "clustering"]].values, x.rasr_mean.values, ["k", "het", "C"]))
+OUT["scale_model"] = sm
+show("structural model, scale-study graphs", sm)
+
 json.dump(OUT, open(os.path.join(R, "numbers.json"), "w"), indent=1,
           default=lambda o: float(o) if np.isscalar(o) else (o.tolist() if hasattr(o, "tolist") else str(o)))
 print("\nsaved numbers.json")

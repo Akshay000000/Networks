@@ -132,3 +132,12 @@ for n in sorted(sc, key=int):
                 f"${v['ER']['rasr100']:.2f} \\pm {v['ER']['sd100']:.2f}$ & ${v['BA']['rasr60']:.2f}$ / ${v['WS']['rasr60']:.2f}$ / ${v['ER']['rasr60']:.2f}$ & {v['BA']['het']:.2f} \\\\")
 w("tab_scale", "\n".join(rows))
 print("tables written:", sorted(os.listdir(OUT)))
+
+# --- structural model refitted at every ASR setting (realization graphs)
+AM = N["asr_models"]
+rows = []
+for a, lab in (("100", "100\\%"), ("80", "80\\%"), ("60", "60\\%"), ("50", "50\\%"), ("rand", "Rand.")):
+    v = AM[a]
+    cells = [f"{v[t]['coef']:+.2f} ({pfmt(v[t]['p']) if v[t]['p'] < 0.01 else format(v[t]['p'], '.3f')})" for t in ("k", "het", "C")]
+    rows.append(f"{lab} & {v['R2']:.3f} & {v['R2_loo']:.3f} & " + " & ".join(cells) + " \\\\")
+w("tab_asr_models", "\n".join(rows))

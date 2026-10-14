@@ -1,4 +1,4 @@
-﻿# Structural Determinants of Network Robustness Under Probabilistic Attack
+# Structural Determinants of Network Robustness Under Probabilistic Attack
 
 Code, data and results for the paper
 
@@ -42,6 +42,7 @@ attack. It estimates RASR for
 | Hub-dominated networks more fragile than homogeneous ones | in 91% to 100% of realizations at every ASR level |
 | RASR explained by mean degree, degree heterogeneity and clustering (1,141 synthetic graphs) | R^2 = 0.930, leave-one-out R^2 = 0.929 |
 | RASR explained by the model label alone | R^2 = 0.310 (adds 0.015 once the three quantities are known) |
+| Same model when attacks can fail (ASR 80%, 60%, 50%, heterogeneous) | R^2 = 0.65 to 0.85; density and heterogeneity significant at every level |
 | Same three-variable model on the 16 empirical networks | R^2 = 0.693; density and heterogeneity significant, clustering not |
 | Community structure (modularity) as a fourth predictor | adds almost nothing on synthetic graphs; not significant on empirical ones |
 | Bridge targeting (HBnnsAGP) beats degree targeting (HDA) | in 95% of synthetic instances and all 16 empirical networks |
@@ -124,11 +125,11 @@ which `prepare_networks.py` writes to `results/` and `results/ext/`.
 
 | Result file | Paper |
 |---|---|
-| `results_realizations_N34.csv` | realization study: Tables 9 and 10, Fig. 12 |
+| `results_realizations_N34.csv` | realization study: Tables 9 and 10, Fig. 12; structural model at every ASR level (Table 14) |
 | `results_sweep_N34.csv` | parameter sweep: Table 11, Fig. 13 |
 | `pooled_N34.csv` | structural model: Eq. 5.1, Tables 12 and 13, Figs 14 and 15 |
-| `results_real16.csv`, `ext/results_real_ext.csv` | empirical networks: Eq. 5.2, Tables 14 and 15, Fig. 16 |
-| `results_scale_N100/200/500.csv` | network size: Table 16, Fig. 17 |
+| `results_real16.csv`, `ext/results_real_ext.csv` | empirical networks: Eq. 5.2, Tables 15 and 16, Fig. 16 |
+| `results_scale_N100/200/500.csv` | network size: Table 17, Fig. 17 |
 | `extras.json` | deterministic scalability (Table 5, Fig. 7); Karate random-ASR draws |
 | `oregon.json` | Oregon autonomous-systems graph |
 | `modularity.json`, `modularity_*.csv` | community structure analysis |
@@ -188,4 +189,3 @@ never call those lines.
 
 Built on the RASR framework of F. Yang and Y. Wang, "Analyzing the robustness of complex networks
 with attack success rate", *Entropy* 25, 1508 (2023).
-
